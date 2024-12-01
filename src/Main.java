@@ -1,5 +1,7 @@
 import com.google.gson.Gson;
 
+import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.net.URI;
 import java.net.http.HttpClient;
@@ -12,10 +14,12 @@ public class Main {
         Scanner sc = new Scanner(System.in);
         int opcion;
         String direccion = "https://swapi.dev/api/films/";
-
+        FilmsResponse films = null;
+        Gson gson = new Gson();
         do{
             System.out.println("Ingrese la opción de consulta: ");
             System.out.println("1. Ver todos los films:");
+            System.out.println("2. Crear archivo JSON con todos los films");
             System.out.println("5. Salir");
             opcion = sc.nextInt();
 
@@ -37,7 +41,14 @@ public class Main {
                     System.out.println("Cuerpo respuesta: "+ response.body());
 
                     //5. Convertir la respuesta JSON a una clase
-                    //TODO: Crear clase filmResponse (arrayList de film) y film(data de cada una).
+                    String json = response.body();
+                    films = gson.fromJson(json, FilmsResponse.class);
+                    films.showAllFilms();
+                    break;
+                case 2:
+                    FileWriter archivo = new FileWriter("films.json");
+                    archivo.write(gson.toJson(films));
+                    archivo.close();
                     break;
             }
         }while (opcion != 5);
