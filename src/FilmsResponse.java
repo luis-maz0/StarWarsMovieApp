@@ -6,9 +6,13 @@ public class FilmsResponse {
     @SerializedName("results")
     private ArrayList<Film> films;
 
-    public void showAllFilms(){
-        for( Film film : films ){
-            System.out.println(film.getTitle());
+    public void showAllFilms() {
+        if (films == null || films.isEmpty()) {
+            System.out.println("No hay films disponibles.");
+        } else {
+            for (int i = 0; i < films.size(); i++) {
+                System.out.println((i + 1) + " - " + films.get(i));
+            }
         }
     }
 }
